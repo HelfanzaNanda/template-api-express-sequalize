@@ -1,6 +1,6 @@
 import { BaseRepositoryInterface } from './BaseRepository.interface';
 import { BaseRepository } from './BaseRepository';
-import { User } from 'app/Models';
+import { User } from '../Models';
 
 interface UserRepositoryInterface extends BaseRepositoryInterface {
     findByEmail(email: string): Promise<any | null>;

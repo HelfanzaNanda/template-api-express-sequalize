@@ -1,7 +1,7 @@
 
 import { UserRepository } from 'app/Repositories/UserRepository';
 import { User } from '../Models';
-import { InvalidCredentialsError } from 'app/Errors';
+import { InvalidCredentialsError } from '../Errors';
 
 class UserService {
     constructor( private userRepository: UserRepository, ) { }
@@ -16,6 +16,12 @@ class UserService {
         return this.userRepository.update(user.id, {
             email_verified_at : new Date()
         })
+    }
+
+    public async all(): Promise<User[]> {
+        // return []
+        const users = await this.userRepository.all();
+        return users
     }
 }
 

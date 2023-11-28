@@ -2,7 +2,7 @@
 
 import { Model } from 'sequelize-typescript';
 import { BaseRepositoryInterface } from './BaseRepository.interface';
-import { ResourceNotFoundError } from 'app/Errors';
+import { ResourceNotFoundError } from '../Errors';
 
 // TODO: Find a way to remove the @ts-ignore comments without getting any errors
 abstract class BaseRepository<M extends Model> implements BaseRepositoryInterface {
@@ -10,9 +10,9 @@ abstract class BaseRepository<M extends Model> implements BaseRepositoryInterfac
 
     public async all(attributes?: string[]): Promise<M[]> {
         // @ts-ignore
-        return this.model.findAll({
-            attributes,
-        });
+        // console.log('MIDEL : ', this.model);
+        
+        return await this.model.findAll();
     }
 
     public async findById(id: number, attributes?: string[]): Promise<M> {

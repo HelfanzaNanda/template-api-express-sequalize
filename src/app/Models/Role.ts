@@ -2,7 +2,9 @@ import {
     Table, Column, Model, CreatedAt, UpdatedAt, IsEmail, Length, AllowNull, Unique, Default, DeletedAt,
 } from 'sequelize-typescript';
 
-@Table
+@Table({
+    underscored : true
+})
 class Role extends Model {
     @Length({ min: 3, max: 255 })
     @AllowNull(false)

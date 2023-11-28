@@ -2,8 +2,11 @@ import {
     Table, Column, Model, CreatedAt, UpdatedAt, IsEmail, Length, AllowNull, Unique, Default, DeletedAt, BelongsTo, ForeignKey,
 } from 'sequelize-typescript';
 import { City } from './City';
+import { underscoredIf } from 'sequelize/types/utils';
 
-@Table
+@Table({
+    underscored : true
+})
 class User extends Model {
     @Length({ min: 3, max: 255 })
     @AllowNull(false)
@@ -22,6 +25,7 @@ class User extends Model {
     @AllowNull(false)
     @Column
     phone!: string;
+
 
     @Column
     emailVerifiedAt! : Date;

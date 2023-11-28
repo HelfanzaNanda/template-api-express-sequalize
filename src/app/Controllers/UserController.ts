@@ -21,6 +21,23 @@ class UserController {
             return next(error);
         }
     }
+
+    public async all(request: Request, response: Response, next: NextFunction) {
+        try {
+
+
+
+            const result = await this.userService.all();
+
+            return response.status(200).send(result);
+        } catch (error) {
+            if (error instanceof BadRequestError) {
+                return response.status(400).send('Invalid activation token.');
+            }
+
+            return next(error);
+        }
+    }
 }
 
 export { UserController };

@@ -13,11 +13,7 @@ class App {
 
     private sequelize?: Sequelize;
 
-    constructor(
-        private container: Container,
-        middlewares: GlobalMiddlewareList,
-        private databaseOptions: DatabaseOptions,
-    ) {
+    constructor( private container: Container, middlewares: GlobalMiddlewareList, private databaseOptions: DatabaseOptions, ) {
         Logger.info('Initializing Express application...');
         this.app = express();
 
@@ -52,7 +48,7 @@ class App {
         Object.values(routes).forEach((routeGroup) => {
             routeGroup.forEach((route) => {
                 this.app[route.method](route.path, route.handle.bind(route));
-                Logger.info(`Route registered: ${route.method.toUpperCase()} ${route.path}`);
+                Logger.info(`Route registered: ${route.method.toString().toUpperCase()} ${route.path}`);
             });
         });
     }
@@ -72,6 +68,7 @@ class App {
 
     // eslint-disable-next-line class-methods-use-this
     public async autoloadDependencies() {
+        // await Container.autoload("./src/App");
         await global.container.autoload();
     }
 }

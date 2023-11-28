@@ -14,10 +14,6 @@ class AuthService {
             throw new InvalidCredentialsError();
         }
 
-        if (!user.active) {
-            throw new AccountNotActivatedError();
-        }
-
         const passwordMatches = PasswordFacade.compare(password, user.password);
 
         if (!passwordMatches) {

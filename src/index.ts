@@ -4,12 +4,8 @@ import container from './container';
 import { middlewares } from './middlewares/Global';
 
 // Config
-import {
-    APP_PORT, APP_SSL, APP_SSL_KEY, APP_SSL_CERT,
-} from './config/app';
-import {
-    DB_DIALECT, DB_HOST, DB_PORT, DB_DATABASE, DB_USERNAME, DB_PASSWORD,
-} from './config/database';
+import { APP_PORT, APP_SSL, APP_SSL_KEY, APP_SSL_CERT, } from './config/app';
+import { DB_DIALECT, DB_HOST, DB_PORT, DB_DATABASE, DB_USERNAME, DB_PASSWORD, } from './config/database';
 
 (async () => {
     const app = new App(
