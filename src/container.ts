@@ -1,13 +1,14 @@
 import { Container } from 'injektion';
 import {
-  SequelizeUserActivationRepository, SequelizeUserRepository,
-} from './app/Repositories/Implementation';
+  UserRepository,
+} from './app/Repositories';
 
 const container = new Container({
   autoloadBaseDir: './src/app',
 });
 
-container.bind('UserRepository', SequelizeUserRepository);
-container.bind('UserActivationRepository', SequelizeUserActivationRepository);
+
+// Container.bind('UserRepository', UserRepository)
+container.bind('UserRepository', UserRepository);
 
 export default container;
