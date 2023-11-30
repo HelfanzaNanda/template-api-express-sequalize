@@ -7,7 +7,20 @@ class TokenFacade {
     }
 
     static verify(token: string, audience?: string) {
-        return jwt.verify(token, AUTH_SECRET, { audience });
+        let result = false;
+        let message = null;
+
+        jwt.verify(token, AUTH_SECRET, function(err, decoded) {
+            if (err instanceof Error) {
+                message = err.message;
+                result = false;
+            }else{
+                message = null;
+                result = true;
+            }
+        });
+
+        return { result, message };
     }
 }
 

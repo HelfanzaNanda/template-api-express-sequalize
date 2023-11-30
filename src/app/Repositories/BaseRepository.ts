@@ -3,23 +3,59 @@
 import { Model } from 'sequelize-typescript';
 import { BaseRepositoryInterface } from './BaseRepository.interface';
 import { ResourceNotFoundError } from '../Errors';
+import { CreateOptions, DestroyOptions, FindOptions, Includeable, Order, Transaction, UpdateOptions, or } from 'sequelize';
+
 
 // TODO: Find a way to remove the @ts-ignore comments without getting any errors
 abstract class BaseRepository<M extends Model> implements BaseRepositoryInterface {
     constructor(protected model: typeof Model) { }
 
-    public async all(attributes?: string[]): Promise<M[]> {
+    public async datatables(attributes?: string[], where? : {}, order? : Order, relations? : Includeable[], limit : number = 5, offset : number = 0): Promise<M[]> {
         // @ts-ignore
-        // console.log('MIDEL : ', this.model);
+        const options : FindOptions = {};
+        if (attributes?.length) {
+            options.attributes = attributes;
+        }
         
-        return await this.model.findAll();
+        if (where) {
+            options.where = where;
+        }
+        if (order) {
+            options.order = order;
+        }
+        if (relations?.length) {
+            options.include = relations;
+        }
+        options.limit = limit;
+        options.offset = offset;
+
+        // @ts-ignore
+        return await this.model.findAndCountAll(options);
+    }
+    public async all(attributes?: string[], relations? : Includeable[]): Promise<M[]> {
+        // @ts-ignore
+        const options : FindOptions = {};
+        if (attributes?.length) {
+            options.attributes = attributes;
+        }
+        if (relations?.length) {
+            options.include = relations;
+        }
+
+        // @ts-ignore
+        return await this.model.findAll(options);
     }
 
-    public async findById(id: number, attributes?: string[]): Promise<M> {
+    public async findById(id: number, attributes?: string[], relations? : Includeable[]): Promise<M> {
+        const options : FindOptions = {};
+        if (attributes?.length) {
+            options.attributes = attributes;
+        }
+        if (relations?.length) {
+            options.include = relations;
+        }
         // @ts-ignore
-        const resource = await this.model.findByPk(id, {
-            attributes,
-        });
+        const resource = await this.model.findByPk(id, options);
 
         if (resource) {
             // @ts-ignore
@@ -29,28 +65,47 @@ abstract class BaseRepository<M extends Model> implements BaseRepositoryInterfac
         throw new ResourceNotFoundError();
     }
 
-    public async create(data: any): Promise<M> {
+    public async create(data: any, transaction? : Transaction, relations? : Includeable[]): Promise<M> {
+        const options : CreateOptions = {};
+        if (relations?.length) {
+            options.include = relations;
+        }
+        if (transaction) {
+            options.transaction = transaction;
+        }
         // @ts-ignore
-        return this.model.create(data);
+        return this.model.create(data, options);
     }
 
-    public async update(id: number, data: any): Promise<M> {
+    public async update(id: number, data: any, transaction? : Transaction, relations? : Includeable[]): Promise<M> {
         const resource = await this.findById(id);
 
         if (resource) {
+            const options : FindOptions = {};
+    
+            if (relations?.length) {
+                options.include = relations;
+            }
+            if (transaction) {
+                options.transaction = transaction;
+            }
             // @ts-ignore
-            return resource.update(data);
+            return resource.update(data, options);
         }
 
         throw new ResourceNotFoundError();
     }
 
-    public async delete(id: number): Promise<boolean> {
+    public async delete(id: number, transaction? : Transaction): Promise<boolean> {
         const resource = await this.findById(id);
 
         if (resource) {
+            const options : DestroyOptions = {};
+            if (transaction) {
+                options.transaction = transaction;
+            }
             // @ts-ignore
-            await resource.destroy();
+            await resource.destroy(options);
             return true;
         }
 

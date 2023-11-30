@@ -2,13 +2,21 @@
 import { UserRepository } from 'app/Repositories/UserRepository';
 import { AccountNotActivatedError, EmailAlreadyInUseError, InvalidCredentialsError } from '../Errors';
 import { PasswordFacade, TokenFacade } from '../Facades';
-import { User } from '../Models';
+import { Role, User } from '../Models';
+import { Includeable } from 'sequelize';
 
 class AuthService {
     constructor( private userRepository: UserRepository, ) { }
 
     public async login(email: string, password: string): Promise<any> {
-        const user = await this.userRepository.findByEmail(email);
+        const include : Includeable[] = [
+            {
+                model : Role,
+                through: {attributes: []},
+                attributes: ['id', 'name']
+            }
+        ];
+        const user = await this.userRepository.findByEmail(email, include);
 
         if (!user) {
             throw new InvalidCredentialsError();
@@ -40,13 +48,18 @@ class AuthService {
             id: user.id,
             email: user.email,
             name: user.name,
+            roles: user.roles
         };
-
+        const expiresIn = 60 * 60;
         const authData = {
             user: userData,
-            token: await TokenFacade.sign(userData, {
-                expiresIn: 60 * 60,
-            }),
+            jwt : {
+                token: await TokenFacade.sign(userData, {
+                    expiresIn: expiresIn,
+                }),
+                expiresIn : expiresIn,
+                token_type : 'bearer'
+            }
 
         };
 

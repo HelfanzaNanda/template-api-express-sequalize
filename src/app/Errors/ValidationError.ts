@@ -1,29 +1,43 @@
 import { BaseError } from './BaseError';
 
+export interface ValidationInterface {
+    [key: string]: string[];
+}
+
+export interface ValidationErrorInterface {
+    validation? : ValidationInterface;
+    stackTrace? : any;
+    error? : Error;
+}
+
 class ValidationError extends BaseError {
-    constructor(
-        public description: string,
-        public field?: string,
-        public validator?: string,
-        public originalName?: string,
-        public stackTrace?: string,
-    ) {
-        super(
-            400,
-            'ValidationError',
-            'Validation Error',
-            description,
-            originalName,
-            stackTrace,
-        );
+    constructor( public params? : ValidationErrorInterface ) {
+        let stackTrace = params?.stackTrace;
+        let statusCode = 422;
+        let message = "Unprocessable Entity";
+        
+        if (params?.error && params.error instanceof Error) {
+            stackTrace = params.error.stack;
+            message = params.error.message;
+            statusCode = 500;
+        }
+
+        super( statusCode, message, stackTrace, );
     }
 
+    
     public override toPlainObject(): object {
-        return {
+    
+        let errors = this.params?.validation?.errors;
+
+        const result : {[key : string] : any} = {
             ...super.toPlainObject(),
-            field: this.field,
-            validator: this.validator,
-        };
+        }
+        if (errors) {
+            result['validation'] = errors   
+        }
+
+        return result;
     }
 }
 

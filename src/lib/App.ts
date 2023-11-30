@@ -24,6 +24,7 @@ class App {
         this.createDatabaseConnection();
     }
 
+
     public getExpressInstance(): express.Express {
         return this.app;
     }
@@ -47,6 +48,10 @@ class App {
     private registerRoutes() {
         Object.values(routes).forEach((routeGroup) => {
             routeGroup.forEach((route) => {
+                if (route.middlewares?.length) {
+                    this.registerMiddlewares(route.middlewares);
+                }
+                
                 this.app[route.method](route.path, route.handle.bind(route));
                 Logger.info(`Route registered: ${route.method.toString().toUpperCase()} ${route.path}`);
             });
@@ -68,8 +73,7 @@ class App {
 
     // eslint-disable-next-line class-methods-use-this
     public async autoloadDependencies() {
-        // await Container.autoload("./src/App");
-        await global.container.autoload();
+        await Container.autoload('./src/app')
     }
 }
 

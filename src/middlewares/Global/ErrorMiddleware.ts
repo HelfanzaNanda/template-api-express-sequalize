@@ -3,34 +3,34 @@ import { BaseError } from '../../app/Errors/BaseError';
 import { ErrorParser } from '../../app/Errors/ErrorParser';
 
 class ErrorMiddleware extends Middleware {
-  public static override isErrorHandlingMiddleware = true;
+    public static override isErrorHandlingMiddleware = true;
 
-  protected static handle(): any {
-    if (!this.error) {
-      return this.next();
+    protected static handle(): any {
+        if (!this.error) {
+            return this.next();
+        }
+
+        if (this.isErrorProperlyFormatted()) {
+            return this.sendErrorResponse();
+        }
+
+        return this.parseErrorAndSendResponse();
     }
 
-    if (this.isErrorProperlyFormatted()) {
-      return this.sendErrorResponse();
+    private static isErrorProperlyFormatted() {
+        return this.error instanceof BaseError;
     }
 
-    return this.parseErrorAndSendResponse();
-  }
+    private static sendErrorResponse() {
+        return this.response
+            .status(this.error.code)
+            .send(this.error.toPlainObject());
+    }
 
-  private static isErrorProperlyFormatted() {
-    return this.error instanceof BaseError;
-  }
-
-  private static sendErrorResponse() {
-    return this.response
-      .status(this.error.code)
-      .send(this.error.toPlainObject());
-  }
-
-  private static parseErrorAndSendResponse() {
-    this.error = ErrorParser.parse(this.error);
-    return this.sendErrorResponse();
-  }
+    private static parseErrorAndSendResponse() {
+        this.error = ErrorParser.parse(this.error);
+        return this.sendErrorResponse();
+    }
 }
 
 export { ErrorMiddleware };

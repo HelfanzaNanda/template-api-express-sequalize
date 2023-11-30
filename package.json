@@ -27,6 +27,7 @@
     "@types/passport": "^1.0.16",
     "@types/passport-local": "^1.0.38",
     "@types/validator": "^13.11.7",
+    "@types/validatorjs": "^3.15.5",
     "@typescript-eslint/eslint-plugin": "^6.13.0",
     "eslint-config-airbnb-typescript": "^17.1.0",
     "eslint-plugin-import": "^2.29.0",
@@ -43,7 +44,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
-    "injektion": "^0.1.0",
+    "injektion": "^0.4.0",
     "jsonwebtoken": "^9.0.2",
     "log-symbols": "^4.1.0",
     "morgan": "^1.10.0",
@@ -52,6 +53,7 @@
     "nodemailer": "^6.9.7",
     "reflect-metadata": "^0.1.13",
     "sequelize": "^6.35.1",
-    "sequelize-typescript": "^2.1.6"
+    "sequelize-typescript": "^2.1.6",
+    "validatorjs": "^3.22.1"
   }
 }

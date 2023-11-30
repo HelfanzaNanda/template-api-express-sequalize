@@ -1,4 +1,4 @@
-# Express API Repository Template
+<!-- # Express API Repository Template -->
 
 ## Setup
 
@@ -9,6 +9,12 @@
 ## Execution
 
 ```bash
+# migrate to database
+$ npx sequelize-cli db:migrate
+
+# seed data into database
+$ npx sequelize-cli db:seed:all
+
 # run in development mode with hot reload
 $ npm run dev
 

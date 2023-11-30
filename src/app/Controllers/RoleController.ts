@@ -1,17 +1,17 @@
 import { NextFunction, Request, Response } from 'express';
 // import { ActivateAction, LoginAction, RegisterAction } from '../Actions/Auth';
 import { BadRequestError, ValidationError } from '../Errors';
-import { UserService } from '..//Services/UserService';
-import { ResponseHelper } from '..//Utils/ResponseUtils';
+import { ResponseHelper } from '../Utils/ResponseUtils';
+import { RoleService } from '../Services/RoleService';
 // import * as V from 'validatorjs';
 let Validator = require('validatorjs');
 
-class UserController {
-    constructor(private userService : UserService) { }
+class RoleController {
+    constructor(private roleService : RoleService) { }
 
     public async all(request: Request, response: Response, next: NextFunction) {
         try {
-            const data = await this.userService.all();
+            const data = await this.roleService.all();
             const result = ResponseHelper.success({data : data})
 
             return response.status(200).json(result);
@@ -31,13 +31,10 @@ class UserController {
             const order = request.body.order;
             const filters = request.body.filters;
 
-            const data = await this.userService.datatables(limit, offset, order, filters);
-            console.log('ERROR CONTROLLER: ', data);
-            
+            const data = await this.roleService.datatables(limit, offset, order, filters);
             const result = ResponseHelper.success({data : data})
             return response.status(200).json(result);
         } catch (error) {
-            console.log('ERROR CONTROLLER CATCH: ', error);
             if (error instanceof BadRequestError) {
                 return response.status(400).send('Server Error');
             }
@@ -50,7 +47,7 @@ class UserController {
         try {
             const { id } = request.params;
 
-            const data = await this.userService.findOne(Number(id));
+            const data = await this.roleService.findOne(Number(id));
 
             const result = ResponseHelper.success({data : data})
             return response.status(200).json(result);
@@ -67,10 +64,6 @@ class UserController {
         try {
             const rules = {
                 name : 'required',
-                email : 'required',
-                password : 'required',
-                phone : 'required',
-                roles : 'required|array',
             }
 
             const validation = new Validator(request.body, rules);
@@ -79,13 +72,9 @@ class UserController {
             }
 
             const name = request.body.name;
-            const email = request.body.email;
-            const password = request.body.password;
-            const phone = request.body.phone;
-            const roles = request.body.roles;
 
 
-            const data = await this.userService.create(name, email, password, phone, roles);
+            const data = await this.roleService.create(name);
             const result = ResponseHelper.success({data : {}})
             return response.status(200).json(result);
         } catch (error) {
@@ -102,10 +91,6 @@ class UserController {
         try {
             const rules = {
                 name : 'required',
-                email : 'required',
-                password : 'required',
-                phone : 'required',
-                roles : 'required|array',
             }
 
             const validation = new Validator(request.body, rules);
@@ -115,13 +100,9 @@ class UserController {
 
             const id = request.params.id;
             const name = request.body.name;
-            const email = request.body.email;
-            const password = request.body.password;
-            const phone = request.body.phone;
-            const roles = request.body.roles;
 
 
-            const data = await this.userService.update(Number(id), name, email, password, phone, roles);
+            const data = await this.roleService.update(Number(id), name);
 
             const result = ResponseHelper.success({data : {}})
             return response.status(200).json(result);
@@ -137,7 +118,7 @@ class UserController {
     public async delete(request: Request, response: Response, next: NextFunction) {
         try {
             const id = request.params.id;
-            const data = await this.userService.delete(Number(id));
+            const data = await this.roleService.delete(Number(id));
 
             const result = ResponseHelper.success({data : {}})
             return response.status(200).json(result);
@@ -151,4 +132,4 @@ class UserController {
     }
 }
 
-export { UserController };
+export { RoleController };

@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { BadRequestError } from '../Errors';
-import { AuthService } from 'app/Services/AuthService';
+import { AuthService } from '..//Services/AuthService';
 
 class AuthController {
     constructor(private authService : AuthService) { }
