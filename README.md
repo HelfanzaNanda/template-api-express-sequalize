@@ -1,5 +1,8 @@
 <!-- # Express API Repository Template -->
 
+## Clone
+1. git clone https://github.com/HelfanzaNanda/averin-express.git
+
 ## Setup
 
 1. Copy `.env.example` as `.env`
