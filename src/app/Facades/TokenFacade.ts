@@ -10,6 +10,8 @@ class TokenFacade {
         let result = false;
         let message = null;
 
+        jwt.decode
+
         jwt.verify(token, AUTH_SECRET, function(err, decoded) {
             if (err instanceof Error) {
                 message = err.message;

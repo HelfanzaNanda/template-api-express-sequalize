@@ -9,14 +9,14 @@ export default [
     
     Route.get('/users', [UserController, 'all'], [AuthMiddleware]),
     Route.post('/users', [UserController, 'create'], [AuthMiddleware]),
-    Route.post('/users/datatables', [UserController, 'datatables'], [AuthMiddleware]),
+    Route.get('/users/datatables', [UserController, 'datatables'], [AuthMiddleware]),
     Route.get('/users/:id', [UserController, 'findOne'], [AuthMiddleware]),
     Route.put('/users/:id', [UserController, 'update'], [AuthMiddleware]),
     Route.delete('/users/:id', [UserController, 'delete'], [AuthMiddleware]),
 
     Route.get('/roles', [RoleController, 'all'], [AuthMiddleware]),
     Route.post('/roles', [RoleController, 'create'], [AuthMiddleware]),
-    Route.post('/roles/datatables', [RoleController, 'datatables'], [AuthMiddleware]),
+    Route.get('/roles/datatables', [RoleController, 'datatables'], [AuthMiddleware]),
     Route.get('/roles/:id', [RoleController, 'findOne'], [AuthMiddleware]),
     Route.put('/roles/:id', [RoleController, 'update'], [AuthMiddleware]),
     Route.delete('/roles/:id', [RoleController, 'delete'], [AuthMiddleware]),

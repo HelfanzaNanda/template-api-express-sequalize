@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { BadRequestError } from '../Errors';
 import { AuthService } from '..//Services/AuthService';
+import { ResponseHelper } from '../Utils/ResponseUtils';
 
 class AuthController {
     constructor(private authService : AuthService) { }
@@ -15,8 +16,9 @@ class AuthController {
             const password = request.body.password;
 
             const authData = await this.authService.login(email, password);
+            const result = ResponseHelper.success({data : authData})
 
-            return response.status(200).send(authData);
+            return response.status(200).json(result);
         } catch (error) {
             return next(error);
         }

@@ -3,6 +3,7 @@ import { NextFunction, Request, Response } from 'express';
 import { BadRequestError, ValidationError } from '../Errors';
 import { UserService } from '..//Services/UserService';
 import { ResponseHelper } from '..//Utils/ResponseUtils';
+import { Order } from 'sequelize';
 // import * as V from 'validatorjs';
 let Validator = require('validatorjs');
 
@@ -26,18 +27,26 @@ class UserController {
 
     public async datatables(request: Request, response: Response, next: NextFunction) {
         try {
-            const limit = request.body.limit;
-            const offset = request.body.offset;
-            const order = request.body.order;
-            const filters = request.body.filters;
+            const limit = request.query.limit;
+            const offset = request.query.offset;
+            const order = request.query.order;
+            const filters = request.query.filters;
 
-            const data = await this.userService.datatables(limit, offset, order, filters);
-            console.log('ERROR CONTROLLER: ', data);
+            // const result = ResponseHelper.success({data : {
+            //     limit : limit,
+            //     offset : offset,
+            //     order : order,
+            //     filters : filters,
+            // }})
+            // return response.status(200).json(result);
+
+
+
+            const data = await this.userService.datatables(Number(limit), Number(offset), [], filters);
             
             const result = ResponseHelper.success({data : data})
             return response.status(200).json(result);
         } catch (error) {
-            console.log('ERROR CONTROLLER CATCH: ', error);
             if (error instanceof BadRequestError) {
                 return response.status(400).send('Server Error');
             }
