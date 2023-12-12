@@ -113,7 +113,7 @@ class UserService {
         return user;
     }
 
-    public async datatables(limit? : number, offset? : number, order? : Order, filter? : {}): Promise<User[]> {
+    public async datatables(limit? : number, offset? : number, order? : Order, filter? : {}, search? : string): Promise<User[]> {
         const include = [
             {
                 model : Role,
@@ -124,7 +124,7 @@ class UserService {
 
         const filters = parseWhere(filter);
 
-        const users = await this.userRepository.datatables([], filters, order, include, limit, offset);
+        const users = await this.userRepository.datatables([], filters, order, include, limit, offset, search);
         return users
     }
 }

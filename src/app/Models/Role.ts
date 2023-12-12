@@ -3,6 +3,8 @@ import {
 } from 'sequelize-typescript';
 import { User } from './User';
 import { UsersRoles } from './UsersRoles';
+import { Permission } from './Permission';
+import { RolesPermissions } from './RolesPermissions';
 
 @Table({
     underscored : true,
@@ -35,6 +37,9 @@ class Role extends Model {
 
     @Column
     deletedBy!: number;
+
+    @BelongsToMany(() => Permission, () => RolesPermissions, 'role_id')
+    permissions! : Permission[]
 }
 
 export { Role };

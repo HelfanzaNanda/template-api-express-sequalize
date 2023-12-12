@@ -17,7 +17,8 @@ interface BaseRepositoryInterface {
         order?: Order,
         relations?: Includeable[], 
         limit?: number, 
-        offset?: number
+        offset?: number,
+        search? : string
     ): Promise<any[]>;
 
 }

@@ -4,13 +4,17 @@ import { Model } from 'sequelize-typescript';
 import { BaseRepositoryInterface } from './BaseRepository.interface';
 import { ResourceNotFoundError } from '../Errors';
 import { CreateOptions, DestroyOptions, FindOptions, Includeable, Order, Transaction, UpdateOptions, or } from 'sequelize';
+import { User } from '../Models';
 
 
 // TODO: Find a way to remove the @ts-ignore comments without getting any errors
 abstract class BaseRepository<M extends Model> implements BaseRepositoryInterface {
     constructor(protected model: typeof Model) { }
 
-    public async datatables(attributes?: string[], where? : {}, order? : Order, relations? : Includeable[], limit : number = 5, offset : number = 0): Promise<M[]> {
+    public async datatables(attributes?: string[], where? : {}, order? : Order, relations? : Includeable[], limit : number = 5, offset : number = 0, search? : string): Promise<M[]> {
+        // const attrs = this.model.;
+        // console.log('attrs : ', attrs);
+        
         // @ts-ignore
         const options : FindOptions = {};
         if (attributes?.length) {
@@ -26,6 +30,19 @@ abstract class BaseRepository<M extends Model> implements BaseRepositoryInterfac
         if (relations?.length) {
             options.include = relations;
         }
+        const columns = [];
+
+        
+        
+        // return this.model.attributes;
+    //     for( let key of Object.keys(this.model.attributes))   {
+    //         columns.push({
+    //             name:key,
+    //             type:this.model.attributes[key].type.key
+    //         });
+    //   }
+        // const columns = this.model.attr
+        // columns.
         options.limit = limit;
         options.offset = offset;
 
@@ -73,6 +90,8 @@ abstract class BaseRepository<M extends Model> implements BaseRepositoryInterfac
         if (transaction) {
             options.transaction = transaction;
         }
+        console.log('options : ', options);
+        
         // @ts-ignore
         return this.model.create(data, options);
     }

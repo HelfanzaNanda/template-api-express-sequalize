@@ -31,6 +31,7 @@ class UserController {
             const offset = request.query.offset;
             const order = request.query.order;
             const filters = request.query.filters;
+            const search = request.query.search;
 
             // const result = ResponseHelper.success({data : {
             //     limit : limit,

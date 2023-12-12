@@ -12,6 +12,7 @@ class App {
     private app: express.Express;
 
     private sequelize?: Sequelize;
+    private namespace: string = '/api';
 
     constructor( private container: Container, middlewares: GlobalMiddlewareList, private databaseOptions: DatabaseOptions, ) {
         Logger.info('Initializing Express application...');
@@ -48,12 +49,14 @@ class App {
     private registerRoutes() {
         Object.values(routes).forEach((routeGroup) => {
             routeGroup.forEach((route) => {
+                // console.log('ROUTE : ', route);
+                
                 if (route.middlewares?.length) {
                     this.registerMiddlewares(route.middlewares);
                 }
-                
-                this.app[route.method](route.path, route.handle.bind(route));
-                Logger.info(`Route registered: ${route.method.toString().toUpperCase()} ${route.path}`);
+                const fullpath = `${this.namespace}${route.path}`;
+                this.app[route.method](fullpath, route.handle.bind(route));
+                Logger.info(`Route registered: ${route.method.toString().toUpperCase()} ${fullpath}`);
             });
         });
     }

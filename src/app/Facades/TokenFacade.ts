@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 import { AUTH_SECRET } from '../../config/auth';
 
 class TokenFacade {
@@ -9,6 +9,7 @@ class TokenFacade {
     static verify(token: string, audience?: string) {
         let result = false;
         let message = null;
+        let data : string | JwtPayload | undefined = undefined;
 
         jwt.decode
 
@@ -16,13 +17,15 @@ class TokenFacade {
             if (err instanceof Error) {
                 message = err.message;
                 result = false;
+                data = {};
             }else{
                 message = null;
                 result = true;
+                data = decoded;
             }
         });
 
-        return { result, message };
+        return { result, message, data };
     }
 }
 

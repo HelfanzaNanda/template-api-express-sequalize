@@ -1,6 +1,6 @@
-import { Middleware } from "../../lib/Middleware";
-import { UnauthorizedError } from "../../app/Errors";
-import { TokenFacade } from "../../app/Facades";
+import { Middleware } from "../lib/Middleware";
+import { UnauthorizedError } from "../app/Errors";
+import { TokenFacade } from "../app/Facades";
 
 class AuthMiddleware extends Middleware {
     protected static override handle(): any {
