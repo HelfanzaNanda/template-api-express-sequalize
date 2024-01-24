@@ -5,3 +5,4 @@ export { Menu } from './Menu';
 export { Permission } from './Permission';
 export { MenusPermissions } from './MenusPermissions';
 export { RolesPermissions } from './RolesPermissions';
+export { Invitation } from './Invitation';

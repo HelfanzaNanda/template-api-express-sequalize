@@ -47,10 +47,18 @@ function parseBoolean(value: string): boolean {
 }
 
 function parseWhere(filters : any) {
+    console.log('filter dalam helper parseWehre: ', filters);
     if (!filters) {
         return {}
     }
     
+
+    // { searchText: 'aaa', searchedColumn: 'name', searchedOperator: '' }
+    const field = filters.searchedColumn;
+    const value = filters.searchText;
+    const operator = filters.searchedOperator;
+    
+
     const operators : {[key : string] : any} = {
         'like' : Op.like,
         'and' : Op.and,
@@ -64,29 +72,42 @@ function parseWhere(filters : any) {
         'eq' : Op.eq,
     };
 
+    // {
+    //     col : {
+    //         op : val
+    //     }
+    // }
+
+    const val = operator == 'like' ? `%${value}%` : value;
     const result : {[key : string] : any} = {};
 
-    const fields = Object.keys(filters);
-    fields.forEach(field => {
-        const operator = filters[field];
-        const operatorKeys = Object.keys(operator);
-        operatorKeys.forEach(op => {
-            let value = operator[op] as string;
-            let opt = operators[op];
-            if (!opt) {
-                opt = op;
-            }
+    result[field] = {
+        [operators[operator]] : val
+    }
 
-            if (op == 'like') {
-                value = `%${value}%`;
-            }
-
-            result[field] = {
-                [opt] : value.toLowerCase()
-            }
-        })
-    })
     return result;
+
+    // const fields = Object.keys(filters);
+    // fields.forEach(field => {
+    //     const operator = filters[field];
+    //     const operatorKeys = Object.keys(operator);
+    //     operatorKeys.forEach(op => {
+    //         let value = operator[op] as string;
+    //         let opt = operators[op];
+    //         if (!opt) {
+    //             opt = op;
+    //         }
+
+    //         if (op == 'like') {
+    //             value = `%${value}%`;
+    //         }
+
+    //         result[field] = {
+    //             [opt] : value.toLowerCase()
+    //         }
+    //     })
+    // })
+    // return result;
     
 
 }

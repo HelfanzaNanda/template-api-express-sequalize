@@ -4,8 +4,8 @@
 module.exports = {
     async up(queryInterface, Sequelize) {
         const data = [
-            { "name": "MANAGER" },
-            { "name": "CUSTOMER" },
+            // { "name": "MANAGER" },
+            // { "name": "CUSTOMER" },
             { "name": "ADMIN" },
         ];
 

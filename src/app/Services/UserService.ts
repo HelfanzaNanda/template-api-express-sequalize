@@ -122,9 +122,9 @@ class UserService {
             }
         ];
 
-        const filters = parseWhere(filter);
+        // const filters = parseWhere(filter);
 
-        const users = await this.userRepository.datatables([], filters, order, include, limit, offset, search);
+        const users = await this.userRepository.datatables([], {}, order, include, limit, offset, search);
         return users
     }
 }
